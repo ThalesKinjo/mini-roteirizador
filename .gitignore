@@ -1,0 +1,32 @@
+# Node / TypeScript
+node_modules/
+dist/
+*.js.map
+
+# Logs
+*.log
+logs/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Ruby / Rails
+tmp/
+log/
+*.pid
+*.seed
+.bundle/
+vendor/bundle/
+db/*.sqlite3
+config/master.key
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
