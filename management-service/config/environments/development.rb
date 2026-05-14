@@ -9,8 +9,7 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
   config.log_level = :debug
   config.log_tags = [:request_id]
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.perform_caching = false
   config.active_support.deprecation = :log
   config.active_record.dump_schema_after_migration = false
+  config.hosts.clear
 end
