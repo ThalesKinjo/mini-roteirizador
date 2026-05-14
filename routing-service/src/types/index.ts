@@ -26,6 +26,7 @@ export interface RouteCalculationRequest {
 export interface RouteAssignmentRequest {
   veiculo_id: string
   endereco_ids: string[]
+  motorista_id?: string
 }
 
 export interface RouteCalculationResult {

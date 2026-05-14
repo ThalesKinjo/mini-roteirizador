@@ -47,7 +47,7 @@ router.post('/calcular', async (req: Request, res: Response) => {
 
 router.post('/atribuir', async (req: Request, res: Response) => {
   try {
-    const { veiculo_id, endereco_ids }: RouteAssignmentRequest = req.body
+    const { veiculo_id, endereco_ids, motorista_id }: RouteAssignmentRequest = req.body
 
     if (!veiculo_id || !endereco_ids?.length) {
       return res.status(400).json({ error: 'veiculo_id e endereco_ids são obrigatórios' })
@@ -67,6 +67,7 @@ router.post('/atribuir', async (req: Request, res: Response) => {
     const routeRepo = AppDataSource.getRepository(Route)
     const rota = routeRepo.create({
       vehicleId: veiculo_id,
+      motoristaId: motorista_id ?? null,
       addressIds: rotaOrdenada.map(e => e.id),
       status: 'atribuida',
       distanciaTotalKm: calcularDistanciaTotal(rotaOrdenada)
@@ -76,6 +77,16 @@ router.post('/atribuir', async (req: Request, res: Response) => {
     res.json({ message: 'Rota atribuída com sucesso', rota_id: rota.id })
   } catch (err: any) {
     res.status(500).json({ error: err.message || 'Erro ao atribuir rota' })
+  }
+})
+
+router.get('/', async (_req: Request, res: Response) => {
+  try {
+    const routeRepo = AppDataSource.getRepository(Route)
+    const rotas = await routeRepo.find({ order: { createdAt: 'DESC' } })
+    res.json(rotas)
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || 'Erro ao buscar rotas' })
   }
 })
 

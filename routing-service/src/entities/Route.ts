@@ -14,6 +14,9 @@ export class Route {
   @Column()
   vehicleId!: string
 
+  @Column({ type: 'varchar', nullable: true })
+  motoristaId!: string | null
+
   @Column({ type: 'jsonb' })
   addressIds!: string[]
 
