@@ -8,7 +8,7 @@ Sistema de roteirização de entregas com arquitetura de microsserviços.
 |---|---|---|
 | `management-service` | Ruby on Rails 7 + PostgreSQL | 3001 |
 | `routing-service` | Node.js + Express + TypeScript + PostgreSQL | 4000 |
-| `frontend` | Vue 3 + Vite + Tailwind CSS | 80 |
+| `frontend` | Vue 3 + Vite + Tailwind CSS | 8080 |
 
 ## Como rodar
 
@@ -18,10 +18,10 @@ Sistema de roteirização de entregas com arquitetura de microsserviços.
 docker-compose up --build
 ```
 
-Acesse: [http://localhost](http://localhost)
+Acesse: [http://localhost:8080](http://localhost:8080)
 
 > O management-service fica em `localhost:3001` e o routing-service em `localhost:4000`.
-> O frontend (nginx) serve a aplicação Vue na porta 80.
+> O frontend (nginx) serve a aplicação Vue na porta 8080.
 
 ### Sem Docker
 
