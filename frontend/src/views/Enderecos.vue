@@ -95,12 +95,22 @@
       </div>
     </div>
   </div>
+
+  <ConfirmModal
+    :aberto="modalAberto"
+    :titulo="modalTitulo"
+    :mensagem="modalMensagem"
+    variante="perigo"
+    @confirmar="onConfirmar"
+    @cancelar="modalAberto = false"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { enderecosApi, type Endereco } from '../api';
+import ConfirmModal from '../components/ConfirmModal.vue';
 
 interface Estado { sigla: string; nome: string }
 
@@ -222,10 +232,25 @@ const cancelar = () => {
   erro.value = null;
 };
 
-const deletar = async (id: string) => {
-  if (!confirm('Excluir este endereço?')) return;
-  await enderecosApi.deletar(id);
-  await carregar();
+const modalAberto = ref(false);
+const modalTitulo = ref('');
+const modalMensagem = ref('');
+let acaoPendente: (() => Promise<void>) | null = null;
+
+const onConfirmar = async () => {
+  modalAberto.value = false;
+  await acaoPendente?.();
+  acaoPendente = null;
+};
+
+const deletar = (id: string) => {
+  modalTitulo.value = 'Excluir endereço';
+  modalMensagem.value = 'Tem certeza que deseja excluir este endereço? Esta ação não pode ser desfeita.';
+  acaoPendente = async () => {
+    await enderecosApi.deletar(id);
+    await carregar();
+  };
+  modalAberto.value = true;
 };
 
 onMounted(() => Promise.all([carregar(), carregarEstados()]));

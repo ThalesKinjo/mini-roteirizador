@@ -59,11 +59,21 @@
       </div>
     </div>
   </div>
+
+  <ConfirmModal
+    :aberto="modalAberto"
+    :titulo="modalTitulo"
+    :mensagem="modalMensagem"
+    variante="perigo"
+    @confirmar="onConfirmar"
+    @cancelar="modalAberto = false"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { veiculosApi, type Veiculo } from '../api';
+import ConfirmModal from '../components/ConfirmModal.vue';
 
 const veiculos = ref<Veiculo[]>([]);
 const paginaAtual = ref(1);
@@ -122,10 +132,25 @@ const cancelar = () => {
   erro.value = null;
 };
 
-const deletar = async (id: string) => {
-  if (!confirm('Excluir este veículo?')) return;
-  await veiculosApi.deletar(id);
-  await carregar();
+const modalAberto = ref(false);
+const modalTitulo = ref('');
+const modalMensagem = ref('');
+let acaoPendente: (() => Promise<void>) | null = null;
+
+const onConfirmar = async () => {
+  modalAberto.value = false;
+  await acaoPendente?.();
+  acaoPendente = null;
+};
+
+const deletar = (id: string) => {
+  modalTitulo.value = 'Excluir veículo';
+  modalMensagem.value = 'Tem certeza que deseja excluir este veículo? Esta ação não pode ser desfeita.';
+  acaoPendente = async () => {
+    await veiculosApi.deletar(id);
+    await carregar();
+  };
+  modalAberto.value = true;
 };
 
 onMounted(carregar);
