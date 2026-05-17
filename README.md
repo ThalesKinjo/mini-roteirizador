@@ -47,6 +47,37 @@ npm install
 npm run dev
 ```
 
+## Testes
+
+### routing-service (Jest — sem dependências externas)
+
+```bash
+cd routing-service
+npm install
+npm test
+```
+
+Cobre as funções puras de roteirização (`haversineKm`, `nearestNeighbor`, `calcularDistanciaTotal`) e os endpoints HTTP com mocks do banco e do management-service.
+
+### management-service (RSpec — requer PostgreSQL)
+
+Com Docker em execução:
+
+```bash
+docker-compose exec management-service bash -c "rails db:test:prepare && bundle exec rspec"
+```
+
+Sem Docker (com PostgreSQL local configurado via `DATABASE_URL`):
+
+```bash
+cd management-service
+bundle install
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/gestao_development rails db:test:prepare
+bundle exec rspec
+```
+
+Cobre validações e associações dos modelos `Address`, `Vehicle` e `Driver`.
+
 ## Variáveis de ambiente
 
 ### management-service
