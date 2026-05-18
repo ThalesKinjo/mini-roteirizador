@@ -34,6 +34,7 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres-gestao:5432/gestao_development
       RAILS_ENV: development
+      SECRET_KEY_BASE: development_secret_key_base_not_used_in_production
     depends_on:
       postgres-gestao:
         condition: service_healthy
