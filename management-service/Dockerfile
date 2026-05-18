@@ -13,7 +13,7 @@ RUN bundle install --jobs 4 --retry 3
 
 COPY . .
 
-RUN chmod +x entrypoint.sh
+RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh && mkdir -p tmp/pids
 
 EXPOSE 3001
 
